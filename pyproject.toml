@@ -4,9 +4,6 @@ version = "0.1.0"
 description = ""
 authors = ["Axel Furlan <axel.furlan95@gmail.com>"]
 readme = "README.md"
-packages = [
-    { include = "app", from = "." }
-]
 
 [tool.poetry.dependencies]
 python = "^3.10"
@@ -17,6 +14,8 @@ google-cloud-container = "^2.52.0"
 google-auth = "^2.35.0"
 httpx = "^0.27.2"
 python-multipart = "^0.0.12"
+sqlalchemy = "^2.0.36"
+google-cloud-secret-manager = "^2.20.2"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -27,4 +26,4 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
-start = "app.main:start"
+start = "data_wizard_tool.main:start"

@@ -1,5 +1,5 @@
 from fastapi.testclient import TestClient
-from app.main import create_app  # Import your FastAPI app
+from data_wizard_tool.main import create_app  # Import your FastAPI app
 
 app = create_app()
 client = TestClient(app)

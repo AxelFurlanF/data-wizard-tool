@@ -1,13 +1,31 @@
-from app.main import logger
-from fastapi import APIRouter, File, UploadFile, HTTPException
-from google.oauth2 import service_account
 import json
+
+from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
+
+from google.oauth2 import service_account
+from sqlalchemy.orm import Session
+
+from data_wizard_tool.config.config import GCP_PROJECT
+from data_wizard_tool.database import get_db
+from data_wizard_tool.main import logger
+
+from data_wizard_tool.utils.gcp_utils import save_to_secrets_manager
 
 router = APIRouter()
 
+# TODO: Replace with the actual user ID
+
+
+class User:
+    def __init__(self, username):
+        self.username = username
+
+
+current_user = User(username="test_user")
+
 
 @router.post("/gcp_credentials", tags=["gcp"])
-async def upload_gcp_credentials(credentials_file: UploadFile = File(...)):
+async def upload_gcp_credentials(credentials_file: UploadFile = File(...), db: Session = Depends(get_db)):
     try:
         # Read the contents of the uploaded file
         credentials_content = await credentials_file.read()
@@ -17,6 +35,8 @@ async def upload_gcp_credentials(credentials_file: UploadFile = File(...)):
         credentials = service_account.Credentials.from_service_account_info(
             credentials_json
         )
+        save_to_secrets_manager(f"{current_user.username}-gcp-credentials",
+                                credentials_content)
         # You can add additional verification here, like checking for
         # specific permissions or accessing a GCP service to validate.
 
