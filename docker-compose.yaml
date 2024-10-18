@@ -18,9 +18,12 @@ services:
       - "8000:8000"
     environment:
       DATABASE_URL: postgresql://postgres:postgres@db:5432/data_wizard_db
+      GCP_PROJECT: data-wizard-tool
+      GOOGLE_APPLICATION_CREDENTIALS: /app/data-wizard-local.json
     depends_on:
       - db
     volumes:
+      - ./data-wizard-local.json:/app/data-wizard-local.json
       - .:/app  # Mount your application code
 
 volumes:

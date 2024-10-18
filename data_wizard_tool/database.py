@@ -1,5 +1,4 @@
 import os
-
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
@@ -12,8 +11,12 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
 
+def create_session():
+    return SessionLocal()
+
+
 def get_db():
-    db = SessionLocal()
+    db = create_session()
     try:
         yield db
     finally:
