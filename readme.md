@@ -10,3 +10,6 @@ This is meant to be an on-going project that's going to enable engineering teams
 4. Add the ability to login using Google OAuth.
 5. Add the ability to deploy dbt models and run them easily through the UI.
 6. Add a data catalog deployed in a k8s cluster, and somehow make it easy to add metadata through the UI.
+
+...
+10. Support AWS
