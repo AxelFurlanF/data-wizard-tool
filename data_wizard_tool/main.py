@@ -1,15 +1,18 @@
-# model imports
-from .models.user import User
-
-from .database import engine, Base, SessionLocal
+from data_wizard_tool.models import *
+from data_wizard_tool.database import engine, Base, SessionLocal
 import uvicorn
-
 from fastapi import FastAPI, APIRouter
 import logging
 
-logger = logging.getLogger('data-wizard-tool')
+# model imports
+
 
 router = APIRouter()
+
+
+def get_logger():
+    logger = logging.getLogger('data-wizard-tool')
+    return logger
 
 
 @router.get("/")
@@ -19,26 +22,15 @@ async def get_root():
 
 def create_db():
     Base.metadata.create_all(bind=engine)
-    db = SessionLocal()
-    existing_user = db.query(User).filter(User.id == 1).first()
-    if not existing_user:
-        hashed_password = hash("mock_password")  # Hash a mock password
-        mock_user = User(
-            id=1,
-            username="mock_user",
-            email="mock_user@example.com",
-            hashed_password=hashed_password,
-        )
-        db.add(mock_user)
-        db.commit()
-    db.close()
 
 
 def create_app():
-    from data_wizard_tool.routers.v1.google import auth
+    from data_wizard_tool.controllers.v1.google import auth
+    from data_wizard_tool.controllers.v1 import security
     app = FastAPI()
     app.include_router(router)
-    app.include_router(auth.router, prefix="/auth")
+    app.include_router(auth.router, prefix="/gcp")
+    app.include_router(security.router, prefix="/auth")
     return app
 
 

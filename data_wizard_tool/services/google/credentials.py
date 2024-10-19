@@ -7,9 +7,6 @@ from google.oauth2 import service_account
 from data_wizard_tool.utils.gcp_utils import save_to_sm
 
 
-# TODO: Replace with the actual user ID
-
-
 async def upload_gcp_credentials(
     credentials_file: UploadFile, current_user, db: Session
 ):

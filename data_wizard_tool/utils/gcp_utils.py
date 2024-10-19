@@ -18,7 +18,7 @@ def save_to_sm(secret_id, secret_content):
                 "payload": {"data": secret_content},
             }
         )
-    except:
+    except Exception:
         # Secret doesn't exist, create it
         secret = client.create_secret(
             request={
