@@ -52,8 +52,8 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(
     return user
 
 
-def authenticate_user(db: Session, username: str, password: str):
-    user = db.query(User).filter(User.username == username).first()
+def authenticate_user(db: Session, email: str, password: str):
+    user = db.query(User).filter(User.email == email).first()
     if not user:
         return False
     if not verify_password(password, user.hashed_password):
@@ -66,7 +66,6 @@ def create_user(db: Session, user: UserCreateSchema):
     hashed_password = get_password_hash(user.password)
     # Create a new user instance with the hashed password
     new_user = User(
-        username=user.username,
         email=user.email,
         hashed_password=hashed_password
     )
